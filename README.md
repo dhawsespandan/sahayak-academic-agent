@@ -51,7 +51,7 @@ Demo PRNs: `22070126001` (Aarav, borderline attendance in Cloud Computing) and
 ## Tests
 
 ```bash
-pytest -q                     # 26 deterministic tests (rules, tools, guard, nodes) - no API key needed
+pytest -q                     # 27 deterministic tests (rules, tools, guard, nodes) - no API key needed
 python -m eval.run_eval       # 24 end-to-end cases with the real LLM -> eval/results.md
 ```
 

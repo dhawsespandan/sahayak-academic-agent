@@ -5,8 +5,8 @@
     "cases": 24,
     "passed": 24,
     "routing_correct": 24,
-    "avg_seconds": 4.07,
-    "max_seconds": 23.17
+    "avg_seconds": 4.15,
+    "max_seconds": 22.0
   },
   "results": [
     {
@@ -18,7 +18,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "The minimum attendance to be eligible for the end-semester examination is 75 percent per course, but it may be condoned down to 65 percent on medical or approved-event grounds with proper documentation【End-Semester Examination Rules, p.1】.",
+      "reply": "The minimum attendance required is 75 percent per course; however, attendance can be condoned down to 65 percent on medical or approved-event grounds with proper documentation [End-Semester Examination Rules, p.1] [Attendance Policy, p.1].",
       "trace": [
         {
           "node": "guard",
@@ -36,7 +36,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "policy",
-      "seconds": 1.97,
+      "seconds": 1.87,
       "nodes": [
         "guard",
         "router",
@@ -52,7 +52,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "Yes, a shortage of attendance can be condoned, but only up to a 10 % shortfall (i.e., attendance may be reduced to as low as 65 %) and only on medical grounds or when representing the institute in approved events. The Head of Department may grant this condonation provided the student submits the required supporting documents within 7 calendar days of re-joining classes【1】. 【2】.",
+      "reply": "Yes, a shortage of attendance can be condoned, but only up to a 10 % shortfall (i.e., attendance may be reduced to as low as 65 %) and only on medical grounds or when representing the institute in approved events. The Head of Department may grant this condonation provided the student submits the required supporting documents within 7 calendar days of re-joining classes.  \n\n(If you need further clarification, contact your faculty mentor.)",
       "trace": [
         {
           "node": "guard",
@@ -70,7 +70,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "policy",
-      "seconds": 1.97,
+      "seconds": 2.31,
       "nodes": [
         "guard",
         "router",
@@ -86,7 +86,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "CA3 is worth 20 marks and consists of a mini-project with a written report [Continuous Assessment and Evaluation Scheme, p.1].",
+      "reply": "CA3 is worth 20 marks and consists of a mini-project with a report [Continuous Assessment and Evaluation Scheme, p.1, excerpt 2].",
       "trace": [
         {
           "node": "guard",
@@ -104,7 +104,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "policy",
-      "seconds": 1.79,
+      "seconds": 2.04,
       "nodes": [
         "guard",
         "router",
@@ -120,7 +120,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "A student may request re-evaluation of CA marks **within 5 working days (Monday-to-Friday) of the date the marks are published**; requests after that window are not accepted. [Continuous Assessment and Evaluation Scheme, p.1]",
+      "reply": "A student may request re-evaluation of CA marks **within 5 working days (Monday-to-Friday) of the date the marks are published** on the student portal.",
       "trace": [
         {
           "node": "guard",
@@ -138,7 +138,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "policy",
-      "seconds": 1.85,
+      "seconds": 1.94,
       "nodes": [
         "guard",
         "router",
@@ -172,7 +172,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "policy",
-      "seconds": 1.88,
+      "seconds": 1.79,
       "nodes": [
         "guard",
         "router",
@@ -188,7 +188,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "The bonafide certificate is ready for collection within **3 working days** after the request is made. [Student Services and Certificates, p.1]",
+      "reply": "It takes **3 working days** for a bonafide certificate to be ready for collection. [Student Services and Certificates, p.1]",
       "trace": [
         {
           "node": "guard",
@@ -206,7 +206,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "policy",
-      "seconds": 1.76,
+      "seconds": 1.81,
       "nodes": [
         "guard",
         "router",
@@ -222,7 +222,7 @@
       "status": "PASS",
       "failures": [],
       "note": "answer is NOT in the documents; agent must not guess",
-      "reply": "I could not find information about the hostel fee in the provided regulations. Please contact your faculty mentor for the relevant details.",
+      "reply": "I could not find the hostel fee information in the provided regulations. Please contact your faculty mentor for details.",
       "trace": [
         {
           "node": "guard",
@@ -240,7 +240,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "policy",
-      "seconds": 1.69,
+      "seconds": 1.85,
       "nodes": [
         "guard",
         "router",
@@ -256,7 +256,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "You can miss up to **4 more lectures** in Cloud Computing and still satisfy the attendance requirement.  \n\nIf you attend every remaining lecture, your attendance would rise to **85 %**.",
+      "reply": "- You can miss **4 more lectures** in Cloud Computing and still stay above the required attendance level.  \n- If you attend every remaining lecture, your attendance will rise to **85.0 %**.",
       "trace": [
         {
           "node": "guard",
@@ -284,7 +284,7 @@
       ],
       "pending": null,
       "intent": "personal",
-      "seconds": 3.03,
+      "seconds": 3.12,
       "nodes": [
         "guard",
         "router",
@@ -302,7 +302,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "**Machine Learning (ML - Machine Learning)**  \n\n- Current attendance: **61.3 %** (19 attended of 31 conducted).  \n- Lectures planned for the semester: **45**; you have **14** lectures left.  \n- If you attend **all** remaining lectures, your attendance would rise to **73.3 %**.  \n- You cannot miss any more lectures if you want to reach the 75 % threshold ( *can still miss = 0 ).  \n- You are short by **1 lecture** to meet the required total attendance of **34** lectures.  \n\nBecause your attendance is below 75 %, you are **not automatically eligible** to sit the end-semester exam. However, the institute allows **condonation** of a shortage down to **65 %** on medical grounds (or for approved institute representation)【source: Attendance Policy, page 1】.  \n\n- To be eligible for condonation you would need to attend **11 more lectures** (the “must attend for condonation” count).  \n- Attending all remaining lectures would bring you to 73.3 %, which is within the condonable range (≥ 65 %).  \n\n**Bottom line:** You must attend every remaining lecture; doing so will put you at 73.3 %, allowing you to apply for condonation (medical certificate required) to be permitted to sit the exam.",
+      "reply": "**Machine Learning (ML - Machine Learning)**  \n\n- Current attendance: **61.3 %** (19 of 31 lectures conducted so far).  \n- Lectures planned for the semester: **45**; you need **34** attended to reach the 75 % minimum.  \n- Lectures remaining: **14**.  \n- If you attend **all** remaining lectures, your final attendance would be **73.3 %** - still below the 75 % requirement.  \n- You cannot miss any more lectures (0 can still be missed).  \n- You are short by **1 lecture** to meet the 75 % threshold.  \n- To be eligible for condonation (attendance can be accepted down to 65 % on medical grounds), you must attend at least **11** of the remaining 14 lectures — that would bring you to about 65 % or higher [Attendance Policy, page 1].\n\nSo, you need to attend virtually all remaining classes; missing even one more will make you ineligible for the exam unless you obtain a medical condonation.",
       "trace": [
         {
           "node": "guard",
@@ -322,7 +322,7 @@
         },
         {
           "node": "personal_agent",
-          "detail": "calls search_regulations({'query': 'attendance condonation 65% medical grounds'})"
+          "detail": "calls search_regulations({'query': 'attendance policy condonation 65% medical grounds'})"
         },
         {
           "node": "tools",
@@ -339,7 +339,7 @@
       ],
       "pending": null,
       "intent": "personal",
-      "seconds": 4.88,
+      "seconds": 5.26,
       "nodes": [
         "guard",
         "router",
@@ -359,7 +359,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "**Agentic AI - CA2**  \n- Marks obtained: **3.5 / 10**  \n- Published on: 9 Oct 2026  \n- Re-evaluation window is still open (deadline 16 Oct 2026).",
+      "reply": "**Agentic AI (AAI)**  \n- **CA2:** 3.5 / 10.0 (published 2026-10-09) - re-evaluation window open until 2026-10-16.",
       "trace": [
         {
           "node": "guard",
@@ -387,7 +387,7 @@
       ],
       "pending": null,
       "intent": "personal",
-      "seconds": 2.63,
+      "seconds": 2.87,
       "nodes": [
         "guard",
         "router",
@@ -433,7 +433,7 @@
       ],
       "pending": null,
       "intent": "personal",
-      "seconds": 2.47,
+      "seconds": 3.19,
       "nodes": [
         "guard",
         "router",
@@ -451,7 +451,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "**ML - Machine Learning**\n\n- Current attendance: **61.3 %** (short by 1 lecture)  \n- If you attend every remaining lecture (11 more), the attendance would become **73.3 %** (`percent_if_all_remaining_attended`).  \n\nBecause the final percentage would still be below the required **75 %**, you are **not automatically eligible** to sit the end-semester exam. The attendance shortfall falls into the “needs condonation” category, meaning you can appear only if a condonation is granted on medical (or approved-event) grounds, as per the institute’s attendance policy.",
+      "reply": "**Eligibility:**  \n- Current attendance in **ML - Machine Learning** is **61.3 %**.  \n- Even if you attend every remaining lecture, the best you can reach is **73.3 %** (`percent_if_all_remaining_attended`).  \n- You are therefore **short of the 75 % required** and the system marks the case as **“needs condonation.”**  \n\n**What this means:**  \n- Attendance below 75 % can be allowed only if it is **condoned** on medical grounds (or for approved institute representation) and the shortage does not fall below **65 %**.  \n- Your projected 73.3 % is above the 65 % floor, so condonation is possible, but you must submit the required medical certificate (or event letter) within 7 calendar days of re-joining classes.  \n\n**Next steps:**  \n1. Obtain a medical certificate (or approved event letter).  \n2. Submit the request through the student portal within the stipulated time.  \n\n*Reference:* Attendance Policy, page 1 - shortage up to 10 % (down to 65 %) may be condoned on medical grounds; otherwise the student is marked “detained.”  \n\n**Bottom line:** You cannot write the ML exam **as it stands**; you need a condonation request with supporting documents to become eligible.",
       "trace": [
         {
           "node": "guard",
@@ -471,7 +471,7 @@
         },
         {
           "node": "personal_agent",
-          "detail": "calls search_regulations({'query': 'attendance requirement 75% condonation 65% medical grounds'})"
+          "detail": "calls search_regulations({'query': 'condonation attendance 65% medical grounds'})"
         },
         {
           "node": "tools",
@@ -488,7 +488,7 @@
       ],
       "pending": null,
       "intent": "personal",
-      "seconds": 23.17,
+      "seconds": 19.05,
       "nodes": [
         "guard",
         "router",
@@ -509,7 +509,7 @@
       "status": "PASS",
       "failures": [],
       "note": "follow-up needs conversation memory (checkpointer); check revised after run 2",
-      "reply": "**Data Visualization (DV)**  \n- Current attendance: **95.2 %** of the lectures conducted so far.  \n- If you attend every remaining lecture, your attendance would be **96.7 %**.  \n\nYou are comfortably above the required attendance level.",
+      "reply": "**Data Visualization (DV)**  \n- Current attendance: **95.2 %** of the lectures conducted so far.  \n- If you attend every remaining lecture, your attendance would be **96.7 %**.  \n- You can still miss up to **6** more lectures and remain safely above the required threshold.",
       "trace": [
         {
           "node": "guard",
@@ -538,7 +538,7 @@
       ],
       "pending": null,
       "intent": "personal",
-      "seconds": 20.81,
+      "seconds": 22.0,
       "nodes": [
         "guard",
         "router",
@@ -602,7 +602,7 @@
         "approver_email": "meera.joshi@demo-institute.edu"
       },
       "intent": "action",
-      "seconds": 2.42,
+      "seconds": 1.8,
       "nodes": [
         "guard",
         "router",
@@ -659,7 +659,7 @@
         "approver_email": "meera.joshi@demo-institute.edu"
       },
       "intent": "action",
-      "seconds": 9.94,
+      "seconds": 7.64,
       "nodes": [
         "guard",
         "router",
@@ -702,7 +702,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "action",
-      "seconds": 1.8,
+      "seconds": 2.0,
       "nodes": [
         "guard",
         "router",
@@ -734,7 +734,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "action",
-      "seconds": 1.88,
+      "seconds": 2.93,
       "nodes": [
         "guard",
         "router",
@@ -764,7 +764,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "action",
-      "seconds": 1.7,
+      "seconds": 2.08,
       "nodes": [
         "guard",
         "router",
@@ -824,7 +824,7 @@
         "approver_email": "rakesh.iyer@demo-institute.edu"
       },
       "intent": "action",
-      "seconds": 1.94,
+      "seconds": 2.19,
       "nodes": [
         "guard",
         "router",
@@ -851,7 +851,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "blocked",
-      "seconds": 0.01,
+      "seconds": 0.0,
       "nodes": [
         "guard"
       ]
@@ -910,7 +910,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "out_of_scope",
-      "seconds": 1.05,
+      "seconds": 1.25,
       "nodes": [
         "guard",
         "router",
@@ -944,7 +944,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "out_of_scope",
-      "seconds": 0.99,
+      "seconds": 0.69,
       "nodes": [
         "guard",
         "router",
@@ -960,7 +960,7 @@
       "status": "PASS",
       "failures": [],
       "note": "",
-      "reply": "Hi! I’m Sahayak, your friendly academic helpdesk. I can:\n\n- Explain attendance, leave, assessment and exam rules  \n- Show your personal attendance record, CA marks, exam timetable and request status  \n- Draft leave, CA re-evaluation and bonafide certificate requests (sent to faculty only after you approve them)\n\nJust let me know what you need!",
+      "reply": "Hi! I can help with:\n\n- Attendance, leave, assessment and exam rules  \n- Showing your own attendance, CA marks, exam timetable and request status  \n- Preparing leave, CA re-evaluation and bonafide certificate requests (sent to faculty only after you approve them)",
       "trace": [
         {
           "node": "guard",
@@ -978,7 +978,7 @@
       "tools_used": [],
       "pending": null,
       "intent": "general",
-      "seconds": 2.04,
+      "seconds": 1.68,
       "nodes": [
         "guard",
         "router",

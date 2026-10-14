@@ -3,3 +3,6 @@ primaryColor = "#1f5fbf"
 
 [server]
 headless = true
+
+[client]
+toolbarMode = "viewer"

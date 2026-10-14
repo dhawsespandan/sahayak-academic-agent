@@ -136,3 +136,8 @@ def test_graph_compiles_with_expected_nodes():
     nodes = set(g.get_graph().nodes)
     assert {"guard", "router", "policy_rag", "personal_agent", "tools", "extract_request",
             "check_rules", "human_approval", "dispatch", "general_reply"} <= nodes
+
+
+def test_clean_removes_model_artefacts():
+    raw = "within 5 working days 【2†results[0].text】. non‑breaking"
+    assert graph._clean(raw) == "within 5 working days. non-breaking"

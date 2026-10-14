@@ -75,8 +75,12 @@ def _recent(messages: list) -> list:
 _UNICODE_FIXES = str.maketrans({"\u202f": " ", "\u00a0": " ", "\u2011": "-", "\u2013": "-"})
 
 
+# gpt-oss sometimes leaks its internal citation markers such as "【2†results[0].text】".
+_CITATION_ARTEFACT = re.compile(r"\s*【[^】]*】")
+
+
 def _clean(text: str) -> str:
-    return text.translate(_UNICODE_FIXES)
+    return _CITATION_ARTEFACT.sub("", text).translate(_UNICODE_FIXES)
 
 
 def _latest_user_text(state: State) -> str:

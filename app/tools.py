@@ -63,7 +63,10 @@ def get_my_ca_marks(prn: Annotated[str, InjectedState("prn")],
                     "max_marks": row["max_marks"], "published_on": row["published_on"],
                     "reevaluation_deadline": window["deadline"],
                     "reevaluation_open": window["open"]})
-    return {"ca_marks": out, "note": "CA3 (20 marks) has not been held yet."}
+    return {"ca_marks": out,
+            "note": ("CA3 (20 marks, mini project) is scheduled later in the semester and has not "
+                     "been held yet for anyone. It is NOT a missing submission and does not affect "
+                     "exam eligibility today.")}
 
 
 @tool
