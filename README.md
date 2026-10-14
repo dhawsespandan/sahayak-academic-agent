@@ -21,8 +21,8 @@ START -> guard -> router -+-> policy_rag ---------------------------------------
 | Node | Type | Role |
 |---|---|---|
 | `guard` | Python rules | Blocks requests for another student's PRN and prompt-injection phrases before any LLM call |
-| `router` | LLM (Llama 3.1 8B, structured output) | Classifies the message: policy / personal / action / general / out_of_scope |
-| `policy_rag` | Retrieval + LLM (Llama 3.3 70B) | Searches the regulation PDFs in Qdrant and answers with citations; says "not found" below a similarity threshold |
+| `router` | LLM (gpt-oss-20b, structured output) | Classifies the message: policy / personal / action / general / out_of_scope |
+| `policy_rag` | Retrieval + LLM (gpt-oss-120b) | Searches the regulation PDFs in Qdrant and answers with citations; says "not found" below a similarity threshold |
 | `personal_agent` + `tools` | Tool-calling loop | Calls `get_my_attendance`, `get_my_ca_marks`, `get_exam_schedule`, `get_my_requests`, `search_regulations`. The PRN is injected from state, so the LLM cannot read another student's data |
 | `extract_request` | LLM (structured output) | Pulls request fields out of the conversation (can take several turns) |
 | `check_rules` | Python rules | Leave length -> mentor or HoD, medical certificate notes, CA re-evaluation 5-working-day window |
@@ -33,7 +33,7 @@ Conversation memory uses a LangGraph SQLite checkpointer, so follow-up questions
 
 ## Tech stack
 
-Python 3.12+, LangGraph, LangChain (Groq integration), Groq API (Llama 3.3 70B and Llama 3.1 8B),
+Python 3.12+, LangGraph, LangChain (Groq integration), Groq API (OpenAI gpt-oss-120b and gpt-oss-20b open-weight models),
 Qdrant (local mode) with fastembed `BAAI/bge-small-en-v1.5` embeddings, SQLite, n8n, Streamlit.
 
 ## Run locally
