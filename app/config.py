@@ -10,8 +10,8 @@ load_dotenv(ROOT / ".env")
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 # Bigger model for answering and tool calling, small fast model for routing/extraction.
-LLM_MODEL = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
-ROUTER_MODEL = os.getenv("ROUTER_MODEL", "llama-3.1-8b-instant")
+LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
+ROUTER_MODEL = os.getenv("ROUTER_MODEL", "openai/gpt-oss-20b")
 
 DATA_DIR = Path(os.getenv("DATA_DIR", ROOT / "data"))
 DOCS_DIR = ROOT / "data" / "docs"
@@ -24,7 +24,7 @@ COLLECTION = "regulations"
 
 # Retrieval: chunks scoring below this cosine similarity are treated as "not found".
 RAG_TOP_K = 4
-RAG_MIN_SCORE = float(os.getenv("RAG_MIN_SCORE", "0.55"))
+RAG_MIN_SCORE = float(os.getenv("RAG_MIN_SCORE", "0.60"))
 
 # n8n webhook that emails the faculty and logs the request in Google Sheets.
 N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", "")

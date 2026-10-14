@@ -19,6 +19,7 @@ OUT = ROOT / "data" / "docs"
 def md_to_pdf(src: Path, dest: Path) -> None:
     styles = getSampleStyleSheet()
     story = []
+    title = src.read_text(encoding="utf-8").splitlines()[0].lstrip("# ").split(" (")[0]
     for line in src.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line:
@@ -30,7 +31,8 @@ def md_to_pdf(src: Path, dest: Path) -> None:
             story.append(Paragraph(line[3:], styles["Heading2"]))
         else:
             story.append(Paragraph(line, styles["BodyText"]))
-    doc = SimpleDocTemplate(str(dest), pagesize=A4, leftMargin=2.2 * cm, rightMargin=2.2 * cm)
+    doc = SimpleDocTemplate(str(dest), pagesize=A4, leftMargin=2.2 * cm, rightMargin=2.2 * cm,
+                            title=title, author="Sahayak sample regulations")
     doc.build(story)
 
 

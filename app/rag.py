@@ -49,7 +49,7 @@ def load_pdf_chunks() -> list[dict]:
     items = []
     for pdf in sorted(config.DOCS_DIR.glob("*.pdf")):
         reader = PdfReader(pdf)
-        title = (reader.pages[0].extract_text() or "").split("\n")[0].strip()
+        title = (reader.metadata.title if reader.metadata else None) or pdf.stem
         for page_no, page in enumerate(reader.pages, start=1):
             for chunk in chunk_text(page.extract_text() or ""):
                 items.append({"source": pdf.name, "title": title, "page": page_no, "text": chunk})
