@@ -31,7 +31,7 @@ def attendance_status(planned: int, conducted: int, attended: int) -> dict:
         "attended": attended,
         "remaining_lectures": remaining,
         "required_to_attend_total": required,
-        "best_possible_percent": round(100 * best_possible / planned, 1),
+        "percent_if_all_remaining_attended": round(100 * best_possible / planned, 1),
     }
     if can_miss >= 0:
         status["can_still_miss"] = can_miss
