@@ -6,6 +6,8 @@ CA marks and exam timetable, and prepares leave / CA re-evaluation / bonafide ce
 requests. A request is sent to the faculty **only after the student approves it**; the
 sending is done by an n8n workflow (Gmail + Google Sheets).
 
+**Live demo:** https://sahayak-academic-agent.streamlit.app (demo PRNs below)
+
 > All student records and regulations in this repository are **sample data** created for the
 > prototype. They are not the records or rules of any real institute.
 
@@ -51,7 +53,7 @@ Demo PRNs: `22070126001` (Aarav, borderline attendance in Cloud Computing) and
 ## Tests
 
 ```bash
-pytest -q                     # 27 deterministic tests (rules, tools, guard, nodes) - no API key needed
+pytest -q                     # 28 deterministic tests (rules, tools, guard, nodes) - no API key needed
 python -m eval.run_eval       # 24 end-to-end cases with the real LLM -> eval/results.md
 ```
 

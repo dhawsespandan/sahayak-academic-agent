@@ -9,6 +9,7 @@ import random
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from app import config
 
@@ -79,6 +80,14 @@ DEMO_ATTENDANCE = {
     "22070126001": {"AAI": 30, "ML": 29, "CC": 22, "SE": 25, "DV": 20},  # CC is borderline
     "22070126002": {"AAI": 26, "ML": 19, "CC": 26, "SE": 24, "DV": 15},  # ML cannot reach 75%
 }
+
+
+# Streamlit Community Cloud runs in UTC; the institute (and the n8n log) use India time.
+IST = ZoneInfo("Asia/Kolkata")
+
+
+def now_ist() -> datetime:
+    return datetime.now(IST)
 
 
 def connect() -> sqlite3.Connection:
@@ -193,7 +202,7 @@ def save_request(ref, prn, rtype, details: dict, approver_id, status, dispatch_s
     with session() as conn:
         conn.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?)",
                      (ref, prn, rtype, json.dumps(details), approver_id, status, dispatch_status,
-                      datetime.now().isoformat(timespec="seconds")))
+                      now_ist().isoformat(timespec="seconds")))
 
 
 def get_requests(prn: str):
@@ -210,4 +219,4 @@ def get_requests(prn: str):
 def next_request_ref() -> str:
     with session() as conn:
         n = conn.execute("SELECT COUNT(*) FROM requests").fetchone()[0]
-    return f"SAH-{datetime.now():%Y%m%d}-{n + 1:04d}"
+    return f"SAH-{now_ist():%Y%m%d}-{n + 1:04d}"

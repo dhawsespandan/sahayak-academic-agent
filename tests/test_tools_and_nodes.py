@@ -141,3 +141,9 @@ def test_graph_compiles_with_expected_nodes():
 def test_clean_removes_model_artefacts():
     raw = "within 5 working days 【2†results[0].text】. non‑breaking"
     assert graph._clean(raw) == "within 5 working days. non-breaking"
+
+
+def test_request_reference_uses_india_time():
+    from datetime import timedelta
+    assert db.now_ist().utcoffset() == timedelta(hours=5, minutes=30)
+    assert db.next_request_ref().startswith(f"SAH-{db.now_ist():%Y%m%d}-")
