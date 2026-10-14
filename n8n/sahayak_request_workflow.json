@@ -1,0 +1,114 @@
+{
+  "name": "Sahayak - Forward student request to faculty",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sahayak-request",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Request from Sahayak",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "5d1f3a52-9a51-4b8e-9d2c-sahayak00001"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {"id": "f1", "name": "ref", "value": "={{ $json.body.ref }}", "type": "string"},
+            {"id": "f2", "name": "to", "value": "={{ $json.body.to }}", "type": "string"},
+            {"id": "f3", "name": "subject", "value": "={{ $json.body.subject }}", "type": "string"},
+            {"id": "f4", "name": "student", "value": "={{ $json.body.student_name }} ({{ $json.body.prn }})", "type": "string"},
+            {"id": "f5", "name": "request_type", "value": "={{ $json.body.request_type }}", "type": "string"},
+            {"id": "f6", "name": "approver", "value": "={{ $json.body.approver_name }}", "type": "string"},
+            {"id": "f7", "name": "details_text", "value": "={{ Object.entries($json.body.details).map(([k, v]) => k.replace('_', ' ') + ': ' + v).join('\\n') }}", "type": "string"},
+            {"id": "f8", "name": "details_html", "value": "={{ Object.entries($json.body.details).map(([k, v]) => '<tr><td><b>' + k.replace('_', ' ') + '</b></td><td>' + v + '</td></tr>').join('') }}", "type": "string"},
+            {"id": "f9", "name": "notes", "value": "={{ ($json.body.notes || []).join(' ') }}", "type": "string"},
+            {"id": "f10", "name": "received_at", "value": "={{ $now.toFormat('yyyy-MM-dd HH:mm') }}", "type": "string"}
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Format request",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "html",
+        "message": "=<p>Dear {{ $json.approver }},</p><p>The following <b>{{ $json.request_type }}</b> request was submitted by <b>{{ $json.student }}</b> through the Sahayak helpdesk and confirmed by the student.</p><table border=\"1\" cellpadding=\"6\" style=\"border-collapse:collapse\">{{ $json.details_html }}</table><p>{{ $json.notes }}</p><p>Reference: <b>{{ $json.ref }}</b><br>Received: {{ $json.received_at }}</p><p>Please reply to the student with your decision.</p><p>- Sahayak (automated)</p>",
+        "options": {"appendAttribution": false}
+      },
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Email faculty",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [440, -100],
+      "webhookId": "7c0f6b1e-2b0e-4a8e-8a51-sahayak00002"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {"__rl": true, "mode": "url", "value": ""},
+        "sheetName": {"__rl": true, "mode": "name", "value": "Requests"},
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Reference": "={{ $('Format request').item.json.ref }}",
+            "Received": "={{ $('Format request').item.json.received_at }}",
+            "Student": "={{ $('Format request').item.json.student }}",
+            "Type": "={{ $('Format request').item.json.request_type }}",
+            "Details": "={{ $('Format request').item.json.details_text }}",
+            "Sent to": "={{ $('Format request').item.json.approver }}",
+            "Status": "Emailed to faculty"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {"id": "Reference", "displayName": "Reference", "type": "string", "canBeUsedToMatch": true},
+            {"id": "Received", "displayName": "Received", "type": "string", "canBeUsedToMatch": true},
+            {"id": "Student", "displayName": "Student", "type": "string", "canBeUsedToMatch": true},
+            {"id": "Type", "displayName": "Type", "type": "string", "canBeUsedToMatch": true},
+            {"id": "Details", "displayName": "Details", "type": "string", "canBeUsedToMatch": true},
+            {"id": "Sent to", "displayName": "Sent to", "type": "string", "canBeUsedToMatch": true},
+            {"id": "Status", "displayName": "Status", "type": "string", "canBeUsedToMatch": true}
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "Log in Google Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [660, -100]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'sent', ref: $('Format request').item.json.ref }) }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Reply to Sahayak",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Request from Sahayak": {"main": [[{"node": "Format request", "type": "main", "index": 0}]]},
+    "Format request": {"main": [[{"node": "Email faculty", "type": "main", "index": 0}]]},
+    "Email faculty": {"main": [[{"node": "Log in Google Sheet", "type": "main", "index": 0}]]},
+    "Log in Google Sheet": {"main": [[{"node": "Reply to Sahayak", "type": "main", "index": 0}]]}
+  },
+  "settings": {"executionOrder": "v1"},
+  "pinData": {}
+}
