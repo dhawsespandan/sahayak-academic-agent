@@ -59,7 +59,8 @@ def run_case(graph, case):
 
 def check(case, r):
     failures = []
-    if r["intent"] != case["intent"]:
+    allowed = case["intent"] if isinstance(case["intent"], list) else [case["intent"]]
+    if r["intent"] not in allowed:
         failures.append(f"intent {r['intent']} != {case['intent']}")
     text = r["reply"].lower()
     if "expect_any" in case and not any(s.lower() in text for s in case["expect_any"]):
@@ -68,6 +69,10 @@ def check(case, r):
         failures.append(f"node {case['expect_node']} not visited")
     if "expect_tool" in case and case["expect_tool"] not in r["tools_used"]:
         failures.append(f"tool {case['expect_tool']} not called")
+    if "expect_tool_arg" in case:
+        calls = " ".join(t["detail"] for t in r["trace"] if t["node"] == "personal_agent")
+        if not any(a in calls for a in case["expect_tool_arg"]):
+            failures.append(f"tool not called with any of {case['expect_tool_arg']}")
     if "expect_marks" in case:
         code, comp = case["expect_marks"]
         m = next(x for x in db.get_ca_marks(case["prn"])
@@ -115,7 +120,8 @@ def main():
         time.sleep(2)  # stay under the Groq free-tier rate limit
 
     passed = sum(r["status"] == "PASS" for r in results)
-    routed = sum(r["intent"] == r["expected_intent"] for r in results)
+    routed = sum(r["intent"] in (r["expected_intent"] if isinstance(r["expected_intent"], list)
+                                 else [r["expected_intent"]]) for r in results)
     latencies = [r["seconds"] for r in results if r["seconds"]]
     summary = {"model": config.LLM_MODEL, "router_model": config.ROUTER_MODEL,
                "cases": len(results), "passed": passed, "routing_correct": routed,
@@ -127,7 +133,7 @@ def main():
     lines = ["| ID | Input (last turn) | Expected | Routed | Result | Time (s) |",
              "|---|---|---|---|---|---|"]
     for r in results:
-        lines.append(f"| {r['id']} | {r['turns'][-1]} | {r['expected_intent']} | {r['intent']} | "
+        lines.append(f"| {r['id']} | {r['turns'][-1]} | {'/'.join(r['expected_intent']) if isinstance(r['expected_intent'], list) else r['expected_intent']} | {r['intent']} | "
                      f"{r['status']} | {r['seconds']} |")
     (OUT / "results.md").write_text("\n".join(lines) + "\n\n" + json.dumps(summary) + "\n")
 

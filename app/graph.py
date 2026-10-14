@@ -70,6 +70,15 @@ def _recent(messages: list) -> list:
     return convo[-config.HISTORY_WINDOW:]
 
 
+# gpt-oss often writes narrow no-break spaces and non-breaking hyphens ("5\u202fworking days"),
+# which break plain-text search and copy-paste. Replace them with normal characters.
+_UNICODE_FIXES = str.maketrans({"\u202f": " ", "\u00a0": " ", "\u2011": "-", "\u2013": "-"})
+
+
+def _clean(text: str) -> str:
+    return text.translate(_UNICODE_FIXES)
+
+
 def _latest_user_text(state: State) -> str:
     for m in reversed(state["messages"]):
         if isinstance(m, HumanMessage):
@@ -124,7 +133,7 @@ def policy_rag(state: State) -> dict:
                 "trace": [{"node": "policy_rag", "detail": f"no chunk above threshold: {detail}"}]}
     system = prompts.POLICY_PROMPT.format(context=rag.format_context(good))
     answer = _llm(config.LLM_MODEL).invoke([SystemMessage(system), *_recent(state["messages"])])
-    return {"messages": [AIMessage(answer.content)],
+    return {"messages": [AIMessage(_clean(answer.content))],
             "trace": [{"node": "policy_rag", "detail": f"retrieved: {detail}"}]}
 
 
@@ -139,6 +148,8 @@ def personal_agent(state: State) -> dict:
     current = state["messages"][turn_start:]
     llm = _llm(config.LLM_MODEL).bind_tools(PERSONAL_TOOLS)
     response = llm.invoke([SystemMessage(system), *history, *current])
+    if not response.tool_calls:
+        response.content = _clean(response.content)
     if response.tool_calls:
         calls = ", ".join(f"{c['name']}({c['args']})" for c in response.tool_calls)
         entry = {"node": "personal_agent", "detail": f"calls {calls}"}
@@ -221,7 +232,7 @@ def check_rules(state: State) -> dict:
         else:
             m = marks[0]
             window = rules.reevaluation_window(date.fromisoformat(m["published_on"]), today)
-            d["current_marks"] = f"{m['marks']}/{m['max_marks']}"
+            d["current_marks"] = f"{m['marks']:g}/{m['max_marks']:g}"
             if not window["open"]:
                 problems.append(f"The re-evaluation window for {d['course']} {d['component']} closed "
                                 f"on {window['deadline']} (5 working days after the marks were "
@@ -253,8 +264,13 @@ def human_approval(state: State) -> dict:
     return {"intent": "approved", "trace": [entry]}
 
 
+REQUEST_NAMES = {"leave": "leave", "reevaluation": "CA re-evaluation",
+                 "bonafide": "bonafide certificate"}
+
+
 def dispatch(state: State) -> dict:
     d = state["draft"]
+    name = REQUEST_NAMES[d["request_type"]]
     ref = db.next_request_ref()
     payload = {
         "ref": ref,
@@ -263,7 +279,7 @@ def dispatch(state: State) -> dict:
         "prn": d["prn"],
         "to": config.FACULTY_EMAIL_OVERRIDE or d["approver_email"],
         "approver_name": d["approver_name"],
-        "subject": f"[Sahayak {ref}] {d['request_type'].title()} request from {d['student_name']}",
+        "subject": f"[Sahayak {ref}] {name.capitalize()} request from {d['student_name']}",
         "details": {k: v for k, v in d.items()
                     if k in ("leave_type", "start_date", "end_date", "days", "course", "component",
                              "current_marks", "purpose", "reason") and v},
@@ -274,10 +290,10 @@ def dispatch(state: State) -> dict:
     db.save_request(ref, d["prn"], d["request_type"], payload["details"], d["approver_id"],
                     "submitted", status)
     if result["ok"]:
-        reply = (f"Done. Your {d['request_type']} request has been sent to {d['approver_name']}. "
+        reply = (f"Done. Your {name} request has been sent to {d['approver_name']}. "
                  f"Reference number: {ref}.")
     else:
-        reply = (f"Your {d['request_type']} request is saved with reference {ref}, but I could not "
+        reply = (f"Your {name} request is saved with reference {ref}, but I could not "
                  f"reach the notification service, so it will be forwarded by the office.")
     if d.get("notes"):
         reply += "\nNote: " + " ".join(d["notes"])
@@ -291,7 +307,7 @@ def general_reply(state: State) -> dict:
                 "trace": [{"node": "general_reply", "detail": "out of scope"}]}
     answer = _llm(config.ROUTER_MODEL, 0.3).invoke(
         [SystemMessage(prompts.GENERAL_PROMPT), *_recent(state["messages"])])
-    return {"messages": [AIMessage(answer.content)],
+    return {"messages": [AIMessage(_clean(answer.content))],
             "trace": [{"node": "general_reply", "detail": "greeting/help"}]}
 
 
